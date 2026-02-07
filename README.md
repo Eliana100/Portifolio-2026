@@ -8,7 +8,7 @@
 
   <br>
 
-## 💌 Roadmap de Evolução
+## 💜 Roadmap de Evolução
 
 **Este projeto está em desenvolvimento.** <br> 
 As próximas etapas de aprendizado incluem:
@@ -19,3 +19,7 @@ As próximas etapas de aprendizado incluem:
 - [ ] **Atualização Automática de Projetos:** Sempre que um novo projeto for marcado com a tag `portfolio`, ele aparecerá automaticamente no site.
 - [ ] **Cards Dinâmicos:** As descrições, linguagens utilizadas e links de deploy serão injetados no DOM via JS, sem necessidade de alteração manual no HTML.
 - [ ] **Filtro de Projetos:** Sistema de busca e filtros por tecnologia (ex: Java, CSS, UX) utilizando lógica de programação no front-end.
+
+
+---
+[![LinkedIn](https://img.shields.io/badge/Conectar_no_LinkedIn-000000?style=for-the-badge&logo=linkedin&logoColor=FF16C6&labelColor=000000)](SEU_LINK_DO_LINKEDIN_AQUI)
