@@ -109,12 +109,17 @@ header {
     margin-top: 30px;
     width: 150px;
     padding: 15px 10px;
-    display: block;
-    border-radius: 15px;
-    display: inline-block;
+    display: flex;
+    align-items: center;
     justify-content: center;
-    border: 2px solid;
-    border-color: var(--padrao-color);
+    gap: 8px;
+    border-radius: 15px;
+    border: 2px solid var(--padrao-color);
+}
+
+.logos-redes {
+    width: 30px;
+    height: auto;
 }
 
 .social-links {
@@ -123,6 +128,5 @@ header {
     gap: 8px;
 }
 
- .logos-redes {
-    width: 30px;
- }
+
+
