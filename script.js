@@ -1,9 +1,18 @@
 /* Configuração inicial */
-// Obriga o navegador a nascer no topo ao atualizar a página.
-if (history.scrollRestoration) {
-  history.scrollRestoration = 'manual';
+// Respeita hash de navegação (como #projetos) ao retornar de outra página
+if (window.location.hash) {
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      const alvo = document.querySelector(window.location.hash);
+      if (alvo) alvo.scrollIntoView({ behavior: 'smooth' });
+    }, 150);
+  });
+} else {
+  if (history.scrollRestoration) {
+    history.scrollRestoration = 'manual';
+  }
+  window.scrollTo(0, 0);
 }
-window.scrollTo(0, 0);
 
 // Base de dados de cursos cadastrados.
 const listaFormacao = [
@@ -57,50 +66,72 @@ function renderizarCursos() {
 // Carrega os cursos ao iniciar a página.
 renderizarCursos();
 
-// Base de dados de projetos cadastrados.
+// Base de dados de projetos cadastrados com informações completas
 const projetos = [
-    {
-        id: "nova-fit",
-        categoria: "dev",
-        capa: "img/capa_novafit.svg",
-    },
-    {
-        id: "moove",
-        categoria: "dev",
-        capa: "img/Capa_github.svg",
-    },
-    {
-        id: "on-game",
-        categoria: "dev",
-        capa: "img/capa_ongame2.png",
-    },
-    {
-        id: "casas-bahia",
-        categoria: "dev",
-        capa: "img/casas.png",
-    },
-    {
-        id: "nasa-space-apps",
-        categoria: "dev",
-        capa: "img/cumaru.svg",
-      
-    },
-    {
-        id: "freelance-zirighair",
-        categoria: "ux",
-        capa: "img/mockupzirigh.svg",
-      
-    },
-    {
-        id: "casas-bahia-ux",
-        categoria: "ux",
-        capa: "img/thermokids.svg",
-    },
-    {
-        id: "proa",
-        categoria: "ux",
-        capa: "img/capa_lunna.svg",
-    }
+  {
+    id: "nova-fit",
+    titulo: "Nova Fit",
+    categoria: "dev",
+    categoriaLabel: "Desenvolvimento Web & UI",
+    tags: ["HTML5", "CSS3", "JavaScript"],
+    capa: "img/capa_novafit.svg",
+  },
+  {
+    id: "moove",
+    titulo: "Moove",
+    categoria: "dev",
+    categoriaLabel: "Startup & Front-end",
+    tags: ["JavaScript", "HTML/CSS", "UX"],
+    capa: "img/moove-1-home.png",
+  },
+  {
+    id: "on-game",
+    titulo: "On Game",
+    categoria: "dev",
+    categoriaLabel: "Plataforma Gamer",
+    tags: ["JavaScript", "CSS3", "Front-end"],
+    capa: "img/capa_ongame2.png",
+  },
+  {
+    id: "casas-bahia",
+    titulo: "Casas Bahia (Dev)",
+    categoria: "dev",
+    categoriaLabel: "E-commerce Front-end",
+    tags: ["HTML5", "CSS Grid", "Responsivo"],
+    capa: "img/casas.png",
+  },
+  {
+    id: "nasa-space-apps",
+    titulo: "NASA Space Apps",
+    categoria: "dev",
+    categoriaLabel: "Hackathon & Dados Espaciais",
+    tags: ["Hackathon", "Web", "APIs"],
+    capa: "img/cumaru.svg",
+  },
+  {
+    id: "freelance-zirighair",
+    titulo: "Zirighair",
+    categoria: "ux",
+    categoriaLabel: "UI/UX & Identidade Visual",
+    tags: ["Figma", "Design System", "Mobile"],
+    capa: "img/zirighair-1-celular.png",
+  },
+  {
+    id: "casas-bahia-ux",
+    titulo: "ThermoKids (Casas Bahia UX)",
+    categoria: "ux",
+    categoriaLabel: "Estudo de Caso UX/UI",
+    tags: ["Figma", "Pesquisa UX", "Prototipagem"],
+    capa: "img/thermokids.svg",
+  },
+  {
+    id: "proa",
+    titulo: "Projeto Lunna (PROA)",
+    categoria: "ux",
+    categoriaLabel: "UI/UX & Acessibilidade",
+    tags: ["Figma", "UI Design", "Inclusão"],
+    capa: "img/capa_lunna.svg",
+  }
 ];
 
 /* Variáveis globais de controle das barras de progresso */
@@ -108,7 +139,7 @@ let devDimensions = { maxRange: 0 };
 let uxDimensions = { maxRange: 0 };
 
 /* 2. Carregamento dos projetos (dev e ux) */
-// Monta os cards dos projetos e insere no DOM.
+// Monta os cards dos projetos e insere no DOM com sobreposição rica de informações.
 function renderizarProjetos() {
     const devContainer = document.getElementById('carrossel-dev');
     const uxContainer = document.getElementById('carrossel-ux');
@@ -117,9 +148,16 @@ function renderizarProjetos() {
     let htmlUx = '';
 
     projetos.forEach(proj => {
+        const tagsHtml = proj.tags ? proj.tags.map(t => `<span class="tag-projeto">${t}</span>`).join('') : '';
         const cardHTML = `
-            <div class="cartao-projeto" tabindex="0" role="button" aria-label="Detalhes do projeto ${proj.id}" onclick="irParaDetalhes('${proj.id}')" onkeydown="if(event.key === 'Enter') irParaDetalhes('${proj.id}')">
-                <img src="${proj.capa}" alt="Capa do projeto ${proj.id}" draggable="false" loading="lazy" onerror="this.src='./img/Capa_github.svg'">
+            <div class="cartao-projeto" tabindex="0" role="button" aria-label="Ver case do projeto ${proj.titulo}" onclick="irParaDetalhes('${proj.id}')" onkeydown="if(event.key === 'Enter') irParaDetalhes('${proj.id}')">
+                <img src="${proj.capa}" alt="Capa do projeto ${proj.titulo}" draggable="false" loading="lazy" onerror="this.src='./img/Capa_github.svg'">
+                <div class="sobreposicao-projeto">
+                    <span class="categoria-badge">${proj.categoriaLabel}</span>
+                    <h3 class="titulo-projeto">${proj.titulo}</h3>
+                    <div class="tags-container">${tagsHtml}</div>
+                    <div class="cta-ver-projeto">Ver projeto completo <span>&rarr;</span></div>
+                </div>
             </div>
         `;
 
@@ -127,7 +165,7 @@ function renderizarProjetos() {
         else htmlUx += cardHTML;
     });
 
-    const repeticoes = 10;
+    const repeticoes = 8;
     if (devContainer) devContainer.innerHTML = Array(repeticoes).fill(htmlDev).join('');
     if (uxContainer) uxContainer.innerHTML = Array(repeticoes).fill(htmlUx).join('');
 
@@ -164,8 +202,11 @@ async function buscarProjetosGitHub() {
             if (!projetos.find(p => p.id === repo.name)) {
                 projetos.push({
                     id: repo.name,
+                    titulo: repo.name.replace(/[-_]/g, ' ').toUpperCase(),
                     // Se tiver o tópico 'ux', vai pro carrossel UX, senão Dev
                     categoria: repo.topics.includes('ux') ? 'ux' : 'dev',
+                    categoriaLabel: repo.topics.includes('ux') ? 'UI/UX Design' : 'Desenvolvimento Web',
+                    tags: repo.language ? [repo.language] : ['GitHub'],
                     // Tenta puxar uma imagem 'capa.png' direto do seu repositório.
                     // Se não tiver, o 'onerror' da tag img vai colocar a imagem padrão.
                     capa: `https://raw.githubusercontent.com/${usuario}/${repo.name}/main/capa.png`
@@ -193,6 +234,15 @@ if (menuHamburguer && navbar) {
   menuHamburguer.addEventListener('click', () => {
     navbar.classList.toggle('active');
     menuHamburguer.classList.toggle('active');
+  });
+
+  // Fecha o menu mobile ao selecionar qualquer link de navegação
+  const linksNavMobile = navbar.querySelectorAll('a');
+  linksNavMobile.forEach(link => {
+    link.addEventListener('click', () => {
+      navbar.classList.remove('active');
+      menuHamburguer.classList.remove('active');
+    });
   });
 }
 
@@ -296,9 +346,8 @@ function initCookieBanner() {
     const banner = document.createElement('div');
     banner.className = 'banner-cookies';
     banner.innerHTML = `
-      <div class="icone-cookies" style="font-size: 32px;" aria-hidden="true">🍪</div>
       <div class="texto-cookies">
-        Usamos cookies para melhorar sua experiência no meu site pessoal. Ao continuar navegando, você concorda com o uso de cookies.
+        Usamos cookies para melhorar sua experiência no site. Ao continuar navegando, você concorda com o uso de cookies.
       </div>
       <button class="botao-cookies" aria-label="Aceitar cookies">Entendi</button>
     `;
@@ -331,42 +380,49 @@ function criarSegmentosProgresso(containerId, totalItens) {
 
 function updateProgressBarDimensions() {
   const devInner = document.getElementById('carrossel-dev');
-  if (devInner) {
-    devDimensions.maxRange = devInner.scrollWidth / 10;
+  if (devInner && devInner.scrollWidth > 0) {
+    devDimensions.maxRange = devInner.scrollWidth / 8;
   }
   const uxInner = document.getElementById('carrossel-ux');
-  if (uxInner) {
-    uxDimensions.maxRange = uxInner.scrollWidth / 10;
+  if (uxInner && uxInner.scrollWidth > 0) {
+    uxDimensions.maxRange = uxInner.scrollWidth / 8;
   }
 }
 
-function updateProgressBar(wrapper, containerElement, dimensions) {
+function updateProgressBar(wrapper, containerElement, dimensions, isReverse = false) {
   const inner = wrapper.querySelector('.projetos-carrossel');
   if (!inner || !containerElement) return;
 
   if (!dimensions.maxRange && inner.scrollWidth > 0) {
-    dimensions.maxRange = inner.scrollWidth / 10;
+    dimensions.maxRange = inner.scrollWidth / 8;
   }
 
   if (!dimensions.maxRange) return;
 
-  // Mapeia a translação aplicada pelo CSS.
+  // Mapeia a translação aplicada pelo CSS de forma performática
   const style = window.getComputedStyle(inner);
   let translateX = 0;
   if (style.transform && style.transform !== 'none') {
     const matrix = new DOMMatrixReadOnly(style.transform);
-    translateX = Math.abs(matrix.m41 || 0);
+    const m41 = matrix.m41 || 0;
+    
+    // No carrossel UX (scrollLeft), o CSS vai de -50% a 0, então a distância percorrida para frente é calculada a partir do offset
+    if (isReverse) {
+      translateX = (inner.scrollWidth / 2) - Math.abs(m41);
+    } else {
+      translateX = Math.abs(m41);
+    }
   }
 
-  const scrollLeft = wrapper.scrollLeft;
-  const totalPosition = translateX + scrollLeft;
+  const scrollLeft = wrapper.scrollLeft || 0;
+  const totalPosition = Math.max(0, translateX + scrollLeft);
 
   let progress = 0;
   if (dimensions.maxRange > 0) {
     progress = (totalPosition % dimensions.maxRange) / dimensions.maxRange;
   }
 
-  // Atualiza visualmente as barras de progresso.
+  // Atualiza visualmente os segmentos de progresso
   const fills = containerElement.querySelectorAll('.preenchimento-segmento');
   const N = fills.length;
   fills.forEach((fill, i) => {
@@ -375,19 +431,25 @@ function updateProgressBar(wrapper, containerElement, dimensions) {
   });
 }
 
-// Loop de atualização da barra de progresso.
+// Loop de atualização da barra de progresso com controle de taxa de quadros (throttle para poupar CPU)
 let animationFrameId = null;
-function tickProgressBars() {
-  const devWrapper = document.getElementById('carrossel-dev')?.parentElement;
-  const devContainer = document.getElementById('progress-dev');
-  if (devWrapper && devContainer) {
-    updateProgressBar(devWrapper, devContainer, devDimensions);
-  }
+let lastProgressUpdate = 0;
 
-  const uxWrapper = document.getElementById('carrossel-ux')?.parentElement;
-  const uxContainer = document.getElementById('progress-ux');
-  if (uxWrapper && uxContainer) {
-    updateProgressBar(uxWrapper, uxContainer, uxDimensions);
+function tickProgressBars(timestamp) {
+  if (timestamp - lastProgressUpdate > 30) { // ~30fps suave e eficiente
+    lastProgressUpdate = timestamp;
+
+    const devWrapper = document.getElementById('carrossel-dev')?.parentElement;
+    const devContainer = document.getElementById('progress-dev');
+    if (devWrapper && devContainer) {
+      updateProgressBar(devWrapper, devContainer, devDimensions, false);
+    }
+
+    const uxWrapper = document.getElementById('carrossel-ux')?.parentElement;
+    const uxContainer = document.getElementById('progress-ux');
+    if (uxWrapper && uxContainer) {
+      updateProgressBar(uxWrapper, uxContainer, uxDimensions, true);
+    }
   }
 
   animationFrameId = requestAnimationFrame(tickProgressBars);

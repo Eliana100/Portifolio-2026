@@ -23,7 +23,7 @@
         <ul class="links-nav">
           <li class="links-menu"><a href="index.html">Início</a></li>
           <li class="links-menu">
-            <a href="index.html">Voltar aos Projetos</a>
+            <a href="index.html#projetos">Voltar aos Projetos</a>
           </li>
           <li class="menu-curriculo-mobile">
             <a
@@ -52,29 +52,50 @@
     </header>
 
     <main class="container-detalhes">
-      <!-- Banner destaque (hero) -->
+      <!-- Barra superior de contexto e retorno rápido -->
+      <div class="barra-retorno-topo">
+        <a href="index.html#projetos" class="btn-voltar-projetos" aria-label="Voltar para a seção de projetos">
+          <span aria-hidden="true">&larr;</span> Voltar para todos os projetos
+        </a>
+        <span class="badge-categoria-detalhe" id="projeto-categoria-badge">Case de Estudo</span>
+      </div>
+
+      <!-- Banner destaque (hero) limpo, elegante e com suporte a swipe e zoom -->
       <section class="destaque-projeto">
-        <div class="container-banner" id="projeto-banner">
-          <!-- Imagem injetada pelo JS -->
+        <div class="container-banner-destaque" id="projeto-banner" role="region" aria-label="Visualizador do projeto">
+          <!-- Mídia injetada pelo JS -->
         </div>
+
         <button
           class="seta-galeria prev"
-          aria-label="Imagem anterior"
+          id="btn-seta-prev"
+          aria-label="Mídia anterior"
           onclick="scrollGaleria(-1)"
         >
           &#10094;
         </button>
         <button
           class="seta-galeria next"
-          aria-label="Próxima imagem"
+          id="btn-seta-next"
+          aria-label="Próxima mídia"
           onclick="scrollGaleria(1)"
         >
           &#10095;
         </button>
+
+        <button
+          class="btn-expandir-tela-cheia"
+          id="btn-expandir-tela-cheia"
+          aria-label="Ver em tela cheia com zoom"
+          title="Ver em tela cheia"
+          onclick="abrirLightbox()"
+        >
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+        </button>
       </section>
 
       <!-- Miniaturas da galeria -->
-      <section class="galeria-projeto">
+      <section class="galeria-projeto" id="secao-galeria">
         <div class="container-miniaturas" id="projeto-galeria">
           <!-- Thumbs injetadas pelo JS -->
         </div>
@@ -83,20 +104,69 @@
       <!-- Informações do projeto -->
       <section class="informacoes-projeto">
         <div class="sobre-projeto">
-          <h2 class="titulos" id="titulo-pagina">Sobre</h2>
+          <div class="cabecalho-case">
+            <h1 class="titulos" id="titulo-pagina">Carregando Projeto...</h1>
+            <p class="subtitulo-case" id="projeto-subtitulo"></p>
+          </div>
+
+          <div class="ficha-tecnica">
+            <div class="item-ficha">
+              <span class="label-ficha">Papel</span>
+              <span class="valor-ficha" id="projeto-papel">-</span>
+            </div>
+            <div class="item-ficha">
+              <span class="label-ficha">Categoria</span>
+              <span class="valor-ficha" id="projeto-categoria">-</span>
+            </div>
+            <div class="item-ficha">
+              <span class="label-ficha">Tecnologias</span>
+              <div class="tags-container" id="projeto-tags"></div>
+            </div>
+          </div>
+
           <div class="texto">
+            <h2 class="titulo-secao-case">Visão Geral & Desafio</h2>
             <p id="projeto-descricao"><!-- Texto injetado --></p>
           </div>
         </div>
 
         <div class="cartao-links-projeto cartao-formacao">
-          <p class="tag">Acesso completo</p>
+          <p class="tag">Acesso & Recursos</p>
           <ul id="lista-links">
             <!-- Links injetados -->
           </ul>
         </div>
       </section>
+
+      <!-- Sugestões de projetos relacionados estilo streaming -->
+      <section class="secao-projetos-recomendados" aria-label="Projetos recomendados">
+        <div class="cabecalho-recomendados">
+          <div class="linha-titulo-recomendados">
+            <h2 class="titulos-sub">Veja mais projetos como esse</h2>
+            <a href="index.html#projetos" class="link-ver-todos">Ver todos no portfólio <span>&rarr;</span></a>
+          </div>
+          <p class="subtitulo-recomendados">Continue explorando outros cases de desenvolvimento e UI/UX</p>
+        </div>
+        
+        <div class="trilho-projetos-recomendados" id="grade-recomendados">
+          <!-- Cards de projetos recomendados injetados pelo JS -->
+        </div>
+      </section>
     </main>
+
+    <!-- Modal de Tela Cheia com Zoom (Lightbox) -->
+    <div id="modal-lightbox" class="modal-lightbox" aria-hidden="true" role="dialog" aria-modal="true">
+      <button class="btn-fechar-lightbox" id="btn-fechar-lightbox" aria-label="Fechar visualização em tela cheia">&times;</button>
+      <button class="seta-lightbox prev" id="btn-lightbox-prev" aria-label="Mídia anterior">&#10094;</button>
+      <div class="conteudo-lightbox" id="conteudo-lightbox">
+        <img id="img-lightbox" src="" alt="Visualização em tela cheia">
+      </div>
+      <button class="seta-lightbox next" id="btn-lightbox-next" aria-label="Próxima mídia">&#10095;</button>
+      <div class="rodape-lightbox" id="rodape-lightbox">
+        <span id="legenda-contador-lightbox">1 / 1</span>
+        <span class="dica-fechar-lightbox">Pressione Esc para fechar</span>
+      </div>
+    </div>
 
     <!-- Rodapé -->
     <footer class="footer">
