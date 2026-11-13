@@ -1343,13 +1343,17 @@ header {
 /* 12. Página específica do projeto (projetos.html) */
 .pagina-detalhes header {
   display: flex;
-  position: sticky;
-  top: 15px;
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  background-color: rgba(21, 1, 52, 0.75);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  justify-content: space-between;
+  align-items: center;
+  height: 80px;
+  padding: 0 15px;
+  margin: 20px auto 0;
+  border-radius: 100px;
+  background-color: var(--header-color);
+  opacity: 0.8;
+  max-width: 1200px;
+  position: relative;
+  z-index: 1000;
 }
 
 .container-detalhes {
